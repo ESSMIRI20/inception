@@ -1,3 +1,87 @@
-version: "3.9"
+version: "3.8"
 
-services: {}
+services:
+  nginx:
+    build: ./requirements/nginx
+    container_name: nginx
+    ports:
+      - "443:443"
+    depends_on:
+      - wordpress
+    networks:
+      - app-network
+    restart: unless-stopped
+    volumes:
+      - wp_files:/var/www/html:rw
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
+    secrets:
+      - ssl_key
+      - ssl_cert
+
+  wordpress:
+    build: ./requirements/wordpress
+    container_name: wordpress
+    networks:
+      - app-network
+    restart: unless-stopped
+    expose:
+      - "9000"
+    volumes:
+      - wp_files:/var/www/html
+    environment:
+      - WORDPRESS_DB_HOST=mariadb:3306
+      - WORDPRESS_DB_USER=${MYSQL_USER}
+      - WORDPRESS_DB_PASSWORD_FILE=/run/secrets/db_password
+      - WORDPRESS_DB_NAME=${MYSQL_DATABASE}
+    depends_on:
+      - mariadb
+    secrets:
+      - db_password
+
+  mariadb:
+    build: ./requirements/mariadb
+    container_name: mariadb
+    networks:
+      - app-network
+    restart: unless-stopped
+    volumes:
+      - wp_db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db_root_password
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD_FILE=/run/secrets/db_password
+    secrets:
+      - db_root_password
+      - db_password
+
+volumes:
+  wp_db:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ossama/data/wp_db
+  wp_files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ossama/data/wp_files
+
+networks:
+  app-network:
+    external: true
+    name: srcs_app-network
+
+secrets:
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  db_password:
+    file: ../secrets/db_password.txt
+  ssl_key:
+    file: ../secrets/ssl.key
+  ssl_cert:
+    file: ../secrets/ssl.crt
+
