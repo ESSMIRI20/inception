@@ -8,8 +8,8 @@ fi
 if [ -f /run/secrets/ssl_key ]; then
   cp /run/secrets/ssl_key /etc/nginx/ssl/ssl.key
 fi
-# If certificates are missing or placeholders, generate a self-signed cert
-if [ ! -f /etc/nginx/ssl/ssl.crt ] || grep -q "REPLACE_WITH" /etc/nginx/ssl/ssl.crt 2>/dev/null; then
+# If certificates are missing, empty, or placeholders, generate a self-signed cert
+if [ ! -s /etc/nginx/ssl/ssl.crt ] || [ ! -s /etc/nginx/ssl/ssl.key ] || grep -q "REPLACE_WITH" /etc/nginx/ssl/ssl.crt 2>/dev/null; then
   echo "Generating self-signed certificate for testing..."
   openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -keyout /etc/nginx/ssl/ssl.key -out /etc/nginx/ssl/ssl.crt \
