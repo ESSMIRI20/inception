@@ -21,19 +21,15 @@ services:
       - app-network
     restart: unless-stopped
     expose:
-      - "9000"
+      - "9001"
     volumes:
       - wp_files:/var/www/html
-    environment:
-      - DOMAIN_NAME=${DOMAIN_NAME}
-      - WORDPRESS_DB_HOST=mariadb:3306
-      - WORDPRESS_DB_USER=${MYSQL_USER}
-      - WORDPRESS_DB_PASSWORD_FILE=/run/secrets/db_password
-      - WORDPRESS_DB_NAME=${MYSQL_DATABASE}
     depends_on:
       - mariadb
     secrets:
       - db_password
+    env_file:
+      - .env
 
   mariadb:
     build: ./requirements/mariadb

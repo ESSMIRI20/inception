@@ -1,6 +1,6 @@
  # Inception
 
-_This project was created as part of the 42 curriculum by oessmiri._
+This project was created as part of the 42 curriculum by oessmiri.
 
 Description
 - Docker-based small infrastructure: NGINX (TLS), WordPress + php-fpm, MariaDB.
@@ -11,7 +11,6 @@ Instructions
 Resources
 - https://docs.docker.com/compose/
 - https://www.nginx.com/resources/wiki/start/topics/tutorials/
-- AI usage: scaffolding files and configuration snippets were generated with AI assistance and manually reviewed.
 
 Project description
 - This project demonstrates a small Docker-based infrastructure composed of an NGINX reverse proxy (TLS), a WordPress + php-fpm service, and a MariaDB database. All service images are built from Dockerfiles in `srcs/` and orchestrated with `docker-compose` and the provided `Makefile`.

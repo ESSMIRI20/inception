@@ -1,9 +1,6 @@
 .PHONY: build up down clean fclean
-build:
-	cd srcs && docker compose build
-
 up:
-	mkdir -p /home/${USER}/data/wp_db /home/${USER}/data/wp_files
+	mkdir -p /home/oessmiri/data/wp_db /home/oessmiri/data/wp_files
 	cd srcs && docker compose up -d --build
 
 down:
@@ -14,6 +11,5 @@ clean:
 
 fclean:
 	cd srcs && docker compose down -v --rmi all --remove-orphans
-	-docker volume rm srcs_wp_db srcs_wp_files || true
-	rm -rf /home/${USER}/data/wp_db /home/${USER}/data/wp_files || true
-	mkdir -p /home/${USER}/data/wp_db /home/${USER}/data/wp_files
+	rm -rf /home/oessmiri/data/wp_db /home/oessmiri/data/wp_files || true
+	mkdir -p /home/oessmiri/data/wp_db /home/oessmiri/data/wp_files
