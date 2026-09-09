@@ -17,7 +17,3 @@ fclean:
 	-docker volume rm srcs_wp_db srcs_wp_files || true
 	rm -rf /home/ossama/data/wp_db /home/ossama/data/wp_files || true
 	mkdir -p /home/ossama/data/wp_db /home/ossama/data/wp_files
-
-test:
-	chmod +x scripts/test.sh || true
-	./scripts/test.sh

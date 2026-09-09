@@ -13,9 +13,6 @@ services:
       - wp_files:/var/www/html:rw
     environment:
       - DOMAIN_NAME=${DOMAIN_NAME}
-    secrets:
-      - ssl_key
-      - ssl_cert
 
   wordpress:
     build: ./requirements/wordpress
@@ -61,13 +58,13 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/ossama/data/wp_db
+      device: /home/oessmiri/data/wp_db
   wp_files:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/ossama/data/wp_files
+      device: /home/oessmiri/data/wp_files
 
 networks:
   app-network:
@@ -78,8 +75,3 @@ secrets:
     file: ../secrets/db_root_password.txt
   db_password:
     file: ../secrets/db_password.txt
-  ssl_key:
-    file: ../secrets/ssl.key
-  ssl_cert:
-    file: ../secrets/ssl.crt
-

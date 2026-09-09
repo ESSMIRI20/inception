@@ -2,12 +2,6 @@
 set -e
 
 mkdir -p /etc/nginx/ssl
-if [ -f /run/secrets/ssl_cert ]; then
-  cp /run/secrets/ssl_cert /etc/nginx/ssl/ssl.crt
-fi
-if [ -f /run/secrets/ssl_key ]; then
-  cp /run/secrets/ssl_key /etc/nginx/ssl/ssl.key
-fi
 # If certificates are missing, empty, or placeholders, generate a self-signed cert
 if [ ! -s /etc/nginx/ssl/ssl.crt ] || [ ! -s /etc/nginx/ssl/ssl.key ] || grep -q "REPLACE_WITH" /etc/nginx/ssl/ssl.crt 2>/dev/null; then
   echo "Generating self-signed certificate for testing..."
