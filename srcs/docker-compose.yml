@@ -20,8 +20,6 @@ services:
     networks:
       - app-network
     restart: unless-stopped
-    expose:
-      - "9001"
     volumes:
       - wp_files:/var/www/html
     depends_on:

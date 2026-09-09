@@ -9,7 +9,7 @@ RUN sed -i '/deb.debian.org\/debian-security/d' /etc/apt/sources.list && \
 
 ENV WP_CLI_PHP_ARGS='-d memory_limit=512M'
 
-EXPOSE 9001
+EXPOSE 9000
 
 LABEL service="wordpress"
 
