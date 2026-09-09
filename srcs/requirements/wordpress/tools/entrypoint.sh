@@ -11,10 +11,6 @@ if [ -f /run/secrets/db_password ]; then
   DB_PASS=$(tr -d '\r\n' < /run/secrets/db_password)
 fi
 
-ADMIN_USER="oessmiri"
-ADMIN_PASS="${DB_PASS}"
-ADMIN_EMAIL="oessmiri@example.com"
-
 wp_cli() {
   php -d memory_limit=512M /usr/local/bin/wp "$@"
 }
