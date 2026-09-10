@@ -1,19 +1,35 @@
-FROM wordpress:php7.4-fpm
+FROM debian:12
 
-RUN sed -i '/deb.debian.org\/debian-security/d' /etc/apt/sources.list && \
-    apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y default-mysql-client curl && \
-    rm -rf /var/lib/apt/lists/* && \
-    curl -fsSL https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -o /usr/local/bin/wp && \
+RUN apt-get update && \
+    apt-get install -y \
+        php8.2-fpm \
+        php8.2-mysql \
+        php8.2-curl \
+        php8.2-gd \
+        php8.2-intl \
+        php8.2-mbstring \
+        php8.2-xml \
+        php8.2-zip \
+        default-mysql-client \
+        curl \
+        wget \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL \
+    https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+    -o /usr/local/bin/wp && \
     chmod +x /usr/local/bin/wp
 
-ENV WP_CLI_PHP_ARGS='-d memory_limit=512M'
+RUN mkdir -p /var/www/html
+
+COPY tools/entrypoint.sh /usr/local/bin/entrypoint.sh
+
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+ENV WP_CLI_PHP_ARGS="-d memory_limit=512M"
 
 EXPOSE 9000
 
 LABEL service="wordpress"
 
-COPY tools/entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
